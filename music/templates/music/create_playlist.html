@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+  form p{
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  #id_songs div{
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.015);
+    padding: 10px 20px;
+    border-radius: 10px;
+  }
+
+  #id_songs div input{
+    margin-right: 10px;
+  }
+
+  #id_songs{
+    background: none;
+  }
+
+  form p input[type='text']{
+    background: rgba(255, 255, 255, 0.071);
+    height: 30px;
+    width: 20rem;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 400;
+  }
+
+  form button{
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="p-8">
+    <h2 class="text-2xl font-bold mb-5">Create Playlist</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Create</button>
+    </form>
+  </div>
+{% endblock %}
+
+
+
+
+
+
+

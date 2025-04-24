@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block head %}
+<style>
+  #songs-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.03);
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  #songs-card div{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="p-8">
+  <h2 class="text-6xl font-bold mb-5">{{ playlist.name }}</h2>
+    {% for song in playlist.songs.all %}
+        <a href="{% url 'song' song.id %}">
+          <div id="songs-card">
+            <div>
+              <img class="size-12" src="{{song.cover_image.url}}" alt="">
+              <p>{{ song.title }} - {{ song.artist }}</p>
+            </div>
+            <div>
+              <i class="fa-solid fa-play"></i>
+            </div>
+          </div>
+        </a>
+    {% endfor %}
+</ul>
+</div>
+{% endblock %}
+

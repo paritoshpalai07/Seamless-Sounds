@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+<style>
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+
+.song-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border: 2px solid white;
+    margin-inline: 10px;
+    margin-bottom: 10px;
+    background: rgba( 255, 255, 255, 0 );
+    backdrop-filter: blur( 6px );
+    -webkit-backdrop-filter: blur( 6px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.song-card:hover{
+  background: rgba(255, 255, 255, 0.059);
+}
+
+.song-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+</style>
+    {% endblock %}
+
+    {% block content %}
+  
+    
+    <!-- Main Content -->
+    <div class="flex-1 overflow-y-auto">
+      
+      <!-- Artist details -->
+      <div class="p-6 flex gap-8">
+            <img class="shadow-2xl size-56" src="{{artist.image.url}}" alt="Album Cover" class="h-64 w-64 shadow-lg">
+        
+            <div class="flex flex-col justify-end ">
+                <div class="text-lg font-bold mb-3">Artist</div>
+                <h1 class="text-8xl font-bold mb-6 text-shadow-2xs">{{ artist.name }}</h1>
+            </div>
+        </div>
+
+
+            {% for song in songs %}
+            <a href="{% url 'song' song.id %}">
+                <div class="song-card">
+                    <div class="song-details">
+                        <img class="h-12" src="{{song.cover_image.url}}" alt="">
+                        <p>{{song.title}}</p>
+                    </div>
+    
+                    <div>
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+    </div>
+
+{% endblock %}

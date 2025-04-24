@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seamless Sounds</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  {% block head %}
+  {% endblock %}
+  
+</head>
+<body class="bg-black text-white">
+  <div class="flex h-screen">
+    <!-- Left Sidebar -->
+    <div class="w-64 bg-black p-6 flex flex-col">
+      <!-- Logo -->
+      <div class="mb-6 grid place-content-center">
+        <a href="{% url 'home' %}">
+          <img class="size-24 w-full" src="{% static 'images/logo1.png' %}" alt="">
+        </a>
+        <!-- <p class="font-bold italic">Seamless Sounds</p> -->
+        <!-- <svg class="h-10 w-10 text-white" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.8-.179-.92-.6-.12-.421.18-.8.6-.94 4.56-1.021 8.52-.6 11.64 1.32.42.18.48.659.24 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+        </svg> -->
+      </div>
+
+      <!-- Navigation -->
+      <nav class="mb-8">
+        <ul class="space-y-2">
+          <li>
+            <a href="{% url 'home' %}" class="flex items-center p-2 rounded hover:bg-gray-800">
+              <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 3L4 9v12h16V9l-8-6z"/>
+              </svg>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="#search-bar" class="flex items-center p-2 rounded hover:bg-gray-800">
+              <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-14a6 6 0 11-0.01 12.01A6 6 0 0110 4z"/>
+                <path d="M21 21l-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span>Search</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Library Section -->
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-bold">Your Library</h2>
+        <a href="{% url 'create_playlist' %}">
+          <button class="text-white hover:bg-gray-800 p-1 rounded-full">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+          </button>
+        </a>
+      </div>
+
+      <!-- Create Playlist -->
+      <div class="bg-gray-900 rounded p-4 mb-4">
+        {% if playlists %}
+        <ul>
+          {% for playlist in playlists %}
+          <a href="{% url 'view_playlist' playlist.pk %}"><li class="">◽ {{playlist.name}}</li></a>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <h3 class="font-bold mb-1">Create your first playlist</h3>
+        <p class="text-sm text-gray-400 mb-4">It's easy, we'll help you</p>
+        <a href="{% url 'create_playlist' %}"><button class="bg-white text-black rounded-full px-4 py-2 text-sm font-bold">Create playlist</button></a>
+        {% endif %}
+      </div>
+
+      <!-- Footer Links -->
+      <div class="mt-auto">
+        <div class="flex flex-wrap text-xs text-gray-400 mb-4">
+          <a href="#" class="mr-4 mb-2 hover:underline">Legal</a>
+          <a href="#" class="mr-4 mb-2 hover:underline">Safety & Privacy Center</a>
+          <a href="#" class="mr-4 mb-2 hover:underline">Privacy Policy</a>
+          <a href="#" class="mr-4 mb-2 hover:underline">Cookies</a>
+          <a href="#" class="mr-4 mb-2 hover:underline">About Ads</a>
+          <a href="#" class="mr-4 mb-2 hover:underline">Accessibility</a>
+        </div>
+        <div class="mb-6">
+          <button class="border border-gray-400 rounded-full px-4 py-1 text-sm flex items-center">
+            <svg class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-4-8.5l2.514 2.5L15.5 9.5"/>
+            </svg>
+            English
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 bg-gradient-to-b from-gray-900 to-black overflow-y-auto">
+      <!-- Header -->
+      <header class="flex items-center justify-between p-4 sticky top-0 bg-opacity-70 bg-gray-900 z-10">
+        <!-- Search -->
+        <div class="relative w-1/3">
+          <form method="GET" action="{% url 'search_songs' %}">
+              <input id="search-bar" type="text" name="q" placeholder="What do you want to play?" value="{{ query|default:'' }}" class="bg-gray-800 text-white rounded-full w-full py-2 px-10">
+              <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <!-- <button type="submit">Search</button> -->
+          </form>
+          <!-- <input type="text" placeholder="What do you want to play?" class="bg-gray-800 text-white rounded-full w-full py-2 px-10">
+          <svg class="absolute left-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg> -->
+        </div>
+
+        <!-- Right side navigation -->
+        <div class="flex items-center">
+          <a href="#" class="text-gray-400 hover:text-white mr-6 text-sm font-medium">Premium</a>
+          <a href="#" class="text-gray-400 hover:text-white mr-6 text-sm font-medium">Support</a>
+          <a href="#" class="text-gray-400 hover:text-white mr-6 text-sm font-medium">Download</a>
+          <div class="border-l border-gray-700 h-6 mx-4"></div>
+          <a href="#" class="text-gray-400 hover:text-white mr-6 text-sm font-medium">Install App</a>
+          <!-- <a href="#" class="text-gray-400 hover:text-white mr-6 text-sm font-medium">Sign up</a> -->
+          <a href="{% url 'logout' %}" class="bg-white hover:bg-gray-200 text-black font-bold py-2 px-6 rounded-full">Logout</a>
+        </div>
+      </header>
+
+      {% block content %}
+      {% endblock %}
+
+    </div>
+</div>
+</body>
+</html>

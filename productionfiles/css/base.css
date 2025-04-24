@@ -1,0 +1,34 @@
+body {
+    font-family: 'Gotham', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #121212;
+    color: white;
+  }
+  
+  /* Custom styles for the play button hover effect */
+  .song-card {
+    position: relative;
+  }
+  
+  .play-button {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  }
+  
+  .song-card:hover .play-button {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .song-card:hover .card-image {
+    filter: brightness(0.7);
+    transition: all 0.3s ease;
+  }
+  
+  .card-image {
+    transition: all 0.3s ease;
+  }

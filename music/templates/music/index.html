@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+<!-- {% load static %} -->
+
+   {% block content %}
+      <!-- Main Content Area -->
+      <main class="p-6">
+        <!-- Trending Songs -->
+        <section class="mb-10">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Trending songs</h2>
+            <a href="#" class="text-sm text-gray-400 font-bold hover:underline">Show all</a>
+          </div>
+          
+          <div class="grid grid-cols-7 gap-6">
+            <!-- Song Cards with Play Button Hover Effect -->
+            {% for song in songs %}
+            <div class="bg-gray-800 p-4 rounded hover:bg-gray-700 transition-colors song-card group">
+              <div class="mb-4 relative overflow-hidden">
+                <img class="size-32 object-cover" src="{{ song.cover_image.url }}">
+                <a href="{% url 'song' song.id %}">
+                  <button class="play-button bg-cyan-500 hover:bg-cyan-600 hover:scale-110 text-white p-3 rounded-full flex items-center justify-center w-12 h-12 shadow-xl transition-all">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </button>
+                </a>
+              </div>
+              <h3 class="font-bold truncate">{{ song.title }}</h3>
+              <p class="text-sm text-gray-400 truncate">{{ song.artist }}</p>
+            </div>
+          
+            {% endfor %}
+
+        </section>
+        
+        <!-- Popular Artists -->
+        <section>
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Popular artists</h2>
+            <a href="#" class="text-sm text-gray-400 font-bold hover:underline">Show all</a>
+          </div>
+          
+          <div class="grid grid-cols-7 gap-6">
+            {% for artist in artists %}
+            <!-- Artist Cards -->
+            <a href="{% url 'artist_songs' artist.id %}">
+              <div class="text-center">
+                <div class="mb-4 overflow-hidden rounded-full">
+                  <img src="{{artist.image.url}}" alt="{{artist.name}}" class="w-full rounded-full hover:scale-105 transition-transform">
+                </div>
+                <h3 class="font-bold">{{artist.name}}</h3>
+                <p class="text-sm text-gray-400">Artist</p>
+              </div>
+            </a>
+            {% endfor %}
+            
+          </div>
+        </section>
+      </main>
+      {% endblock %}

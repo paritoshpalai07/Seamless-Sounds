@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+    .song-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border: 2px solid white;
+    margin-inline: 10px;
+    margin-bottom: 10px;
+    background: rgba( 255, 255, 255, 0 );
+    backdrop-filter: blur( 6px );
+    -webkit-backdrop-filter: blur( 6px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.song-card:hover{
+  background: rgba(255, 255, 255, 0.059);
+}
+
+.song-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+</style>
+{% endblock %}
+
+ {% block content %}
+ <h2 class="my-9 px-4 text-xl">Search Results for "{{ query }}"</h2>
+{% if results %}
+    {% for song in results %}
+    <a href="{% url 'song' song.id %}">
+        <div class="song-card">
+            <div class="song-details">
+                <img class="h-12" src="{{song.cover_image.url}}" alt="">
+                <p>{{song.title}}</p>
+            </div>
+
+            <div>
+                <i class="fa-solid fa-play"></i>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+{% else %}
+    <p>No songs found.</p>
+{% endif %}
+ {% endblock %}
+
+ 
+

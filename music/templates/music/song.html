@@ -1,0 +1,327 @@
+{% extends 'base.html' %}
+
+    {% block head %}
+    <style>
+      *{
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+
+.music-player{
+    /* background: #0000004f; */
+    /* width: 400px; */
+    padding: 25px 35px;
+    text-align: center;
+    /* position: absolute; */
+    bottom: 0;
+    width: 100%;
+}
+
+.song-img{
+    width: 90px;
+}
+
+.music-player h1{
+    font-size: 20px;
+    font-weight: 400;
+    /* color: #333;; */
+    color: white;
+    margin-top: 20px;
+}
+
+.music-player p{
+    font-size: 14px;
+    color: #333;
+}
+
+#progress{
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: #67e8f9;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 40px 0;
+}
+
+#progress::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background: #67e8f9;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 8px solid #fff;
+    /* box-shadow: 0 5px 5px rgba(255, 26, 26, 0.22); */
+}
+
+.controls{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controls div{
+    width: 40px;
+    height: 40px;
+    margin: 20px;
+    /* background: #fff; */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    /* box-shadow: 0 10px 20px rgba(255, 26, 26, 0.22); */
+    cursor: pointer;
+}
+
+.controls div:nth-child(2){
+    transform: scale(1.5);
+    background: #fff;
+    color: black;
+}
+
+#heart-btn .fa-solid{
+  color: red;
+}
+
+.song-card{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border: 2px solid white;
+    margin-inline: 10px;
+    margin-bottom: 10px;
+    background: rgba( 255, 255, 255, 0 );
+    backdrop-filter: blur( 6px );
+    -webkit-backdrop-filter: blur( 6px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+.song-card:hover{
+  background: rgba(255, 255, 255, 0.059);
+}
+
+.song-details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+#customAlert{
+  background: rgba( 255, 255, 255, 0.1 );
+/* box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 ); */
+backdrop-filter: blur( 6.5px );
+-webkit-backdrop-filter: blur( 6.5px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+    </style>
+    {% endblock %}
+
+    {% block content %}
+  
+    
+    <!-- Main Content -->
+    <div class="flex-1 overflow-y-auto">
+      
+      <!-- Song details -->
+      <div class="p-6 flex gap-8">
+        <img class="shadow-2xl size-56" src="{{song.cover_image.url}}" alt="Album Cover" class="h-64 w-64 shadow-lg">
+        
+        <div class="flex flex-col justify-end ">
+          <div class="text-lg font-bold mb-3">Song</div>
+          <h1 class="text-8xl font-bold mb-6 text-shadow-2xs">{{ song.title }}</h1>
+          
+          <div class="flex items-center gap-2 text-sm">
+            <span class="">By - {{song.artist}}</span>  
+            <span>•</span>
+            <span>{{song.duration}}</span>
+            <span>•</span>
+            <span>361,541,775</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="music-player">
+
+        <audio id="song" autoplay>  
+            <source src="{{song.audio_file.url}}" type="audio/mpeg">
+        </audio>
+        
+        <div class="flex justify-between">
+          <p style="color: white;" class="text-white" id="song-current-duration">00:00</p>
+          <p style="color: white;" class="text-white">{{song.duration}}</p>
+        </div>
+        <input type="range" value="0" id="progress">
+  
+        <div class="controls">
+          <a href="{% url 'song' song.id|add:'-1' %}">
+            <div><!--Backward btn-->
+                <i class="fa-solid fa-backward"></i>
+            </div>
+          </a>
+            <div onclick="playpause()">
+                <i class="fa-solid fa-pause" id="ctrlIcon"></i>
+            </div>
+            <a href="{% url 'song' song.id|add:'1' %}">
+              <div> <!-- forward btn -->
+                  <i class="fa-solid fa-forward"></i>
+              </div>
+            </a>
+        </div>
+    </div>
+  </div>
+      
+      <!-- Player Controls -->
+      <div class="p-6">
+        <div class="flex gap-4 items-center mb-8">
+          <button onclick="heartToggle()" class="text-white opacity-70 hover:opacity-100">
+            <i id="heart-btn" class="far fa-heart text-2xl"></i>
+          </button>
+          <a href="{{song.audio_file.url}}" download="{{song.title}}.mp3">
+            <button class="text-white opacity-70 hover:opacity-100">
+              <i class="fa-solid fa-download"></i>
+            </button>
+          </a>
+          <button onclick="showAlert('{{song.title}} is set as your ringtone')" class="text-white opacity-70 hover:opacity-100">
+            <!-- <i class="fas fa-ellipsis-h text-2xl"></i> -->
+            <i class="fa-solid fa-phone text-xl"></i>
+          </button>
+
+          <!-- Alert Box -->
+          <div id="customAlert" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-xl shadow-xl w-80 text-center hidden z-50">
+                <h2 id="alertMessage" class="text-lg text-white font-semibold "></h2>
+                <button onclick="closeAlert()" class="mt-4 px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                OK
+                </button>
+</div>
+        </div>
+        
+        <!-- Lyrics -->
+        <div>
+          <h2 class="text-2xl font-bold mb-4">Lyrics</h2>
+          <div class="text-gray-200 space-y-4 h-96 overflow-y-auto">
+            <p>🎵 {{ song.lyrics|linebreaksbr }}</p>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="text-2xl my-9">🎶 More Songs</h1>
+          <div>
+            {% for song in otherSongs %}
+            <a href="{% url 'song' song.id %}">
+                <div class="song-card">
+                    <div class="song-details">
+                        <img class="h-12" src="{{song.cover_image.url}}" alt="">
+                        <p>{{song.title}}</p>
+                    </div>
+    
+                    <div>
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                </div>
+            </a>
+          {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  
+    <!-- <div class="music-player">
+
+      <audio id="song">  
+          <source src="{{song.audio_file.url}}" type="audio/mpeg">
+      </audio>
+
+      <input type="range" value="0" id="progress">
+
+      <div class="controls">
+          <div>
+              <i class="fa-solid fa-backward"></i>
+          </div>
+          <div onclick="playpause()">
+              <i class="fa-solid fa-play" id="ctrlIcon"></i>
+          </div>
+          <div>
+              <i class="fa-solid fa-forward"></i>
+          </div>
+      </div>
+  </div>
+</div> -->
+
+<script>
+  let progress = document.getElementById("progress");
+let song = document.getElementById("song");
+let ctrlIcon = document.getElementById("ctrlIcon");
+let songCurrentDuration = document.getElementById("song-current-duration");
+let ellapsedSecond = 0;
+let ellapsedMinute = 0;
+let heartbtn = document.getElementById('heart-btn');
+
+function heartToggle(){
+  heartbtn.classList.toggle("fa-solid");
+  heartbtn.classList.toggle("text-cyan-300");
+  
+}
+
+song.onloadedmetadata = function(){
+    progress.max = song.duration;
+    progress.value = song.currentTime;
+}
+
+function playpause(){
+    if(ctrlIcon.classList.contains("fa-pause")){
+        song.pause()
+        ctrlIcon.classList.remove("fa-pause");
+        ctrlIcon.classList.add("fa-play");
+    }
+    else{
+        song.play();
+        ctrlIcon.classList.add("fa-pause");
+        ctrlIcon.classList.remove("fa-play");
+    }
+}
+
+if(song.play()){
+    setInterval(() => {
+        progress.value = song.currentTime;
+         ellapsedSecond = parseInt(song.currentTime) % 60;
+         ellapsedMinute = Math.trunc(parseInt(song.currentTime) / 60);
+         if(ellapsedSecond<10){
+         songCurrentDuration.innerHTML = `0${ellapsedMinute}:0${ellapsedSecond}`;
+         }
+         else{
+           songCurrentDuration.innerHTML = `0${ellapsedMinute}:${ellapsedSecond}`;
+         }
+
+    }, 500);
+}
+
+progress.onchange = function(){
+    song.play();
+    song.currentTime = progress.value;
+    // ellapsedSecond = s
+    ctrlIcon.classList.add("fa-pause");
+    ctrlIcon.classList.remove("fa-play");
+}
+
+
+function showAlert(message) {
+      document.getElementById("alertMessage").textContent = message;
+      document.getElementById("customAlert").classList.remove("hidden");
+      document.getElementById("overlay").classList.remove("hidden");
+    }
+
+    function closeAlert() {
+      document.getElementById("customAlert").classList.add("hidden");
+      document.getElementById("overlay").classList.add("hidden");
+    }
+</script>
+
+{% endblock %}
