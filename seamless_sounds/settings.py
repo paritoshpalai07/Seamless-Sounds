@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!k1jsiia#js+)2ss8_3mw+xepn0+wcosnbd)%$*n%2gjqr8e7d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*','https://seamless-sounds-1.onrender.com/']
 
